@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Tooth Candy Shop</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --candy-pink: #ff66b2;
+            --candy-blue: #66ccff;
+            --candy-green: #66ff99;
+            --candy-purple: #cc66ff;
+            --candy-yellow: #ffff66;
+            --candy-orange: #ff9966;
+            --candy-brown: #8b4513;
+            --dark-bg: #2c0b1a;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fff9fb 0%, #fff5f7 100%);
+            min-height: 100vh;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.5rem;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--candy-pink) 0%, var(--candy-purple) 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            margin: 20px;
+        }
+        
+        .hero-section::before {
+            content: "🍬🍭🍫";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            font-size: 60px;
+            opacity: 0.1;
+            animation: float 30s linear infinite;
+            line-height: 1;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-50px, -50px) rotate(360deg); }
+        }
+        
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid transparent;
+            background: white;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border-color: var(--candy-pink);
+        }
+        
+        .candy-card {
+            background: linear-gradient(135deg, #ffffff, #fff9fb);
+        }
+        
+        footer {
+            background: linear-gradient(135deg, var(--dark-bg), #4a1b2f);
+            color: white;
+            border-top: 5px solid var(--candy-pink);
+            margin-top: 50px;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            height: calc(100vh - 80px);
+            width: 280px;
+            background: linear-gradient(to bottom, var(--dark-bg), #3a1527);
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            box-shadow: 5px 0 25px rgba(0,0,0,0.3);
+            padding: 20px 0;
+        }
+        
+        .sidebar.active {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        
+        .sidebar .nav-link {
+            color: #ffd1dc;
+            padding: 15px 30px;
+            margin: 5px 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            border-left: 4px solid transparent;
+        }
+        
+        .sidebar .nav-link i {
+            margin-right: 15px;
+            font-size: 1.3rem;
+            width: 25px;
+            text-align: center;
+        }
+        
+        .sidebar .nav-link:hover {
+            background: linear-gradient(90deg, var(--candy-pink), var(--candy-purple));
+            color: white;
+            padding-left: 35px;
+            border-left: 4px solid white;
+            transform: translateX(5px);
+        }
+        
+        .sidebar .nav-link.active {
+            background: linear-gradient(90deg, var(--candy-pink), var(--candy-purple));
+            color: white;
+            border-left: 4px solid white;
+            box-shadow: 0 5px 15px rgba(255,102,178,0.3);
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, var(--dark-bg), #3a1527) !important;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            border-bottom: 3px solid var(--candy-pink);
+            padding: 15px 0;
+        }
+        
+        .navbar-nav .nav-link {
+            color: #ffd1dc !important;
+            padding: 10px 20px;
+            margin: 0 8px;
+            border-radius: 25px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            font-weight: 500;
+        }
+        
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: var(--candy-pink);
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+        
+        .navbar-nav .nav-link:hover::after {
+            width: 80%;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: white !important;
+            background: rgba(255, 102, 178, 0.2);
+        }
+        
+        .navbar-nav .nav-link.active {
+            background: linear-gradient(135deg, var(--candy-pink), var(--candy-purple));
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(255,102,178,0.4);
+        }
+        
+        .navbar-nav .nav-link.active::after {
+            width: 0;
+        }
+        
+        .dropdown-menu {
+            background: linear-gradient(135deg, var(--dark-bg), #3a1527);
+            border: 2px solid var(--candy-pink);
+            border-radius: 15px;
+            overflow: hidden;
+            padding: 10px;
+            margin-top: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .dropdown-item {
+            color: #ffd1dc;
+            padding: 12px 20px;
+            margin: 5px 0;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .dropdown-item:hover {
+            background: linear-gradient(90deg, var(--candy-pink), var(--candy-purple));
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .btn-outline-light {
+            border: 2px solid var(--candy-pink);
+            color: var(--candy-pink);
+            border-radius: 25px;
+            transition: all 0.3s;
+            font-weight: 600;
+            padding: 8px 25px;
+        }
+        
+        .btn-outline-light:hover {
+            background: linear-gradient(135deg, var(--candy-pink), var(--candy-purple));
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255,102,178,0.4);
+            border-color: transparent;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--candy-pink), var(--candy-purple));
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            transition: all 0.3s;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(255,102,178,0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255,102,178,0.5);
+            background: linear-gradient(135deg, var(--candy-purple), var(--candy-pink));
+        }
+        
+        .btn-sm {
+            padding: 6px 15px;
+            font-size: 0.875rem;
+        }
+        
+        .candy-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .candy-color-1 { color: var(--candy-pink); }
+        .candy-color-2 { color: var(--candy-blue); }
+        .candy-color-3 { color: var(--candy-green); }
+        .candy-color-4 { color: var(--candy-purple); }
+        .candy-color-5 { color: var(--candy-yellow); }
+        .candy-color-6 { color: var(--candy-orange); }
+        .candy-color-7 { color: var(--candy-brown); }
+        
+        .candy-image-placeholder {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px 15px 0 0;
+            background: linear-gradient(135deg, var(--candy-pink), var(--candy-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            font-weight: bold;
+        }
+        
+        .candy-title {
+            font-family: 'Fredoka One', cursive;
+            color: var(--candy-pink);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .price-tag {
+            background: linear-gradient(135deg, var(--candy-pink), var(--candy-purple));
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(255,102,178,0.3);
+        }
+        
+        .testimonial-card {
+            background: linear-gradient(135deg, #ffffff, #fff9fb);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid var(--candy-pink);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        
+        .team-card {
+            background: linear-gradient(135deg, #ffffff, #f8f4ff);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .team-card:hover {
+            border-color: var(--candy-pink);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .team-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: -75px auto 20px;
+            border: 5px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, var(--candy-pink), var(--candy-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            font-weight: bold;
+        }
+        
+        .badge-candy {
+            background: linear-gradient(135deg, var(--candy-pink), var(--candy-purple));
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 15px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--candy-pink);
+            box-shadow: 0 0 0 0.25rem rgba(255, 102, 178, 0.25);
+        }
+        
+        .section-title {
+            position: relative;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--candy-pink), var(--candy-purple));
+            border-radius: 2px;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+            }
+            
+            .hero-section {
+                margin: 10px;
+                padding: 30px 20px !important;
+            }
+            
+            .hero-section h1 {
+                font-size: 2.2rem;
+            }
+            
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: var(--candy-pink);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Page container for dynamic loading */
+        .page-container {
+            min-height: calc(100vh - 160px);
+            padding-top: 100px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        .page-container.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--candy-pink), var(--candy-purple));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 5px 15px rgba(255,102,178,0.4);
+            transition: all 0.3s;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255,102,178,0.6);
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            background: linear-gradient(135deg, #fff9fb, #fff5f7);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            border: 2px solid var(--candy-pink);
+        }
+        
+        .breadcrumb-item.active {
+            color: var(--candy-pink);
+            font-weight: 600;
+        }
+        
+        .breadcrumb-item a {
+            color: var(--candy-purple);
+            text-decoration: none;
+        }
+        
+        .breadcrumb-item a:hover {
+            color: var(--candy-pink);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="candy-bg">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#" onclick="loadPage('home')">
+                <i class="bi bi-cup-straw me-2"></i>Sweet Tooth Candy Shop
+            </a>
+            <button class="navbar-toggler" type="button" onclick="toggleSidebar()">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" onclick="loadPage('home')">
+                            <i class="bi bi-house-door me-1"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-shop me-1"></i> Shop
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="loadPage('products')"><i class="bi bi-box me-2"></i> All Candies</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="loadPage('categories')"><i class="bi bi-tags me-2"></i> Categories</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="loadPage('specials')"><i class="bi bi-star me-2"></i> Special Offers</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="loadPage('gifts')"><i class="bi bi-gift me-2"></i> Gift Baskets</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-info-circle me-1"></i> About
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="loadPage('about')"><i class="bi bi-building me-2"></i> Our Story</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="loadPage('team')"><i class="bi bi-people me-2"></i> Our Team</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="loadPage('locations')"><i class="bi bi-geo-alt me-2"></i> Locations</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="loadPage('contact')">
+                            <i class="bi bi-envelope me-1"></i> Contact
+                        </a>
+                    </li>
+                </ul>
+                <button class="btn btn-outline-light ms-2" onclick="loadPage('cart')">
+                    <i class="bi bi-cart3 me-2"></i> Cart <span class="badge bg-danger ms-1" id="cartCount">0</span>
+                </button>
+                <button class="btn btn-primary ms-2" onclick="loadPage('specials')">
+                    <i class="bi bi-gift me-2"></i> Today's Specials
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <nav class="nav flex-column">
+            <a class="nav-link" href="#" onclick="loadPage('home')"><i class="bi bi-house-door"></i> Home</a>
+            <a class="nav-link" href="#" onclick="loadPage('about')"><i class="bi bi-info-circle"></i> About Us</a>
+            <a class="nav-link" href="#" onclick="loadPage('products')"><i class="bi bi-box"></i> All Products</a>
+            <a class="nav-link" href="#" onclick="loadPage('categories')"><i class="bi bi-tags"></i> Categories</a>
+            <a class="nav-link" href="#" onclick="loadPage('specials')"><i class="bi bi-star"></i> Special Offers</a>
+            <a class="nav-link" href="#" onclick="loadPage('gifts')"><i class="bi bi-gift"></i> Gift Baskets</a>
+            <a class="nav-link" href="#" onclick="loadPage('team')"><i class="bi bi-people"></i> Our Team</a>
+            <a class="nav-link" href="#" onclick="loadPage('locations')"><i class="bi bi-geo-alt"></i> Store Locations</a>
+            <a class="nav-link" href="#" onclick="loadPage('blog')"><i class="bi bi-journal-text"></i> Sweet Blog</a>
+            <a class="nav-link" href="#" onclick="loadPage('gallery')"><i class="bi bi-images"></i> Candy Gallery</a>
+            <a class="nav-link" href="#" onclick="loadPage('faq')"><i class="bi bi-question-circle"></i> FAQ</a>
+            <a class="nav-link" href="#" onclick="loadPage('testimonials')"><i class="bi bi-chat-quote"></i> Testimonials</a>
+            <a class="nav-link" href="#" onclick="loadPage('events')"><i class="bi bi-calendar-event"></i> Events</a>
+            <a class="nav-link" href="#" onclick="loadPage('contact')"><i class="bi bi-telephone"></i> Contact Us</a>
+            <a class="nav-link" href="#" onclick="loadPage('cart')"><i class="bi bi-cart3"></i> Shopping Cart</a>
+        </nav>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="container" id="main-content">
+        <!-- Content will be dynamically loaded here -->
+        <div id="page-content" class="page-container active">
+            <!-- Initial home page content will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" onclick="scrollToTop()">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h3 class="candy-title mb-4">Sweet Tooth Candy Shop</h3>
+                    <p class="fs-5">Spreading sweetness and joy since 1985. Your happiness is our recipe!</p>
+                    <div class="d-flex mt-4">
+                        <a href="#" class="text-white me-3 fs-4"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white me-3 fs-4"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white me-3 fs-4"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="bi bi-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5 class="candy-title mb-4">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none" onclick="loadPage('home')">Home</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none" onclick="loadPage('products')">Shop</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none" onclick="loadPage('about')">About</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none" onclick="loadPage('contact')">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5 class="candy-title mb-4">Newsletter</h5>
+                    <p class="fs-5">Subscribe for sweet updates and exclusive offers!</p>
+                    <div class="input-group mt-3">
+                        <input type="email" class="form-control" placeholder="Your email" id="newsletterEmail">
+                        <button class="btn btn-primary" type="button" onclick="subscribeNewsletter()">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">© 2024 Sweet Tooth Candy Shop. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-decoration-none text-white me-3" onclick="loadPage('privacy')">Privacy Policy</a>
+                    <a href="#" class="text-decoration-none text-white" onclick="loadPage('terms')">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Data for the candy shop
+        const candyData = {
+            featured: [
+                { id: 1, name: "Rainbow Lollipops", price: 3.99, emoji: "🍭", color: "pink", desc: "Handcrafted swirl lollipops in all colors of the rainbow" },
+                { id: 2, name: "Chocolate Truffles", price: 8.99, emoji: "🍫", color: "brown", desc: "Rich, creamy chocolate truffles with various fillings" },
+                { id: 3, name: "Fruit Gummies", price: 5.49, emoji: "🍬", color: "green", desc: "Juicy, fruity gummies bursting with real fruit flavor" },
+                { id: 4, name: "Caramel Swirls", price: 6.99, emoji: "🍯", color: "orange", desc: "Buttery caramel wrapped in creamy chocolate" }
+            ],
+            products: [
+                { id: 1, name: "Rainbow Lollipops", price: 3.99, emoji: "🍭", color: "pink", desc: "Handcrafted swirl lollipops in all colors of the rainbow", category: "lollipops" },
+                { id: 2, name: "Blueberry Gummies", price: 5.49, emoji: "🫐", color: "purple", desc: "Juicy, fruity gummies bursting with real blueberry flavor", category: "gummies" },
+                { id: 3, name: "Sour Apple Rings", price: 4.99, emoji: "🍏", color: "green", desc: "Tangy and sweet apple rings coated in sour sugar", category: "sour" },
+                { id: 4, name: "Chocolate Truffles", price: 8.99, emoji: "🍫", color: "brown", desc: "Rich, creamy chocolate truffles with various fillings", category: "chocolate" },
+                { id: 5, name: "Cotton Candy Bags", price: 3.49, emoji: "☁️", color: "blue", desc: "Fluffy clouds of pink and blue cotton candy", category: "classic" },
+                { id: 6, name: "Jelly Bean Jar", price: 7.99, emoji: "🧆", color: "rainbow", desc: "50+ flavors of colorful jelly beans", category: "classic" },
+                { id: 7, name: "Caramel Apples", price: 6.99, emoji: "🍎", color: "orange", desc: "Crisp apples dipped in homemade caramel", category: "special" },
+                { id: 8, name: "Rock Candy Sticks", price: 4.49, emoji: "💎", color: "rainbow", desc: "Crystallized sugar on a stick in various colors", category: "hard-candy" }
+            ],
+            categories: [
+                { name: "Chocolates", count: 15, emoji: "🍫", color: "brown" },
+                { name: "Gummies", count: 22, emoji: "🍬", color: "green" },
+                { name: "Hard Candies", count: 18, emoji: "💎", color: "blue" },
+                { name: "Lollipops", count: 12, emoji: "🍭", color: "pink" },
+                { name: "Sour Candies", count: 10, emoji: "🍋", color: "yellow" },
+                { name: "Sugar-Free", count: 8, emoji: "🌿", color: "green" }
+            ],
+            team: [
+                { name: "Mrs. Sweetheart", role: "Founder & Head Confectioner", emoji: "👵", color: "pink", desc: "35+ years of candy-making experience" },
+                { name: "Chef Chocolatier", role: "Chocolate Specialist", emoji: "👨‍🍳", color: "brown", desc: "Trained in Belgium, master of chocolate" },
+                { name: "Candy Designer", role: "Creative Director", emoji: "👩‍🎨", color: "rainbow", desc: "Artistic genius behind our candy designs" }
+            ],
+            blog: [
+                { title: "The History of Candy Making", date: "2024-03-15", excerpt: "Explore the sweet journey of candy from ancient times to modern day." },
+                { title: "10 Fun Candy Recipes for Kids", date: "2024-03-10", excerpt: "Easy and safe candy recipes you can make at home with children." },
+                { title: "Healthier Candy Alternatives", date: "2024-03-05", excerpt: "Discover delicious candies that are better for your health." }
+            ],
+            testimonials: [
+                { name: "Sarah M.", role: "Regular Customer", text: "The best candies I've ever tasted! My kids love the rainbow lollipops." },
+                { name: "Michael T.", role: "Event Planner", text: "Perfect for birthday parties! The gift baskets are always a hit." },
+                { name: "Emily R.", role: "Food Blogger", text: "As a food blogger, I've tried many candies, but Sweet Tooth is truly special!" }
+            ],
+            cart: [],
+            currentPage: 'home',
+            pageHistory: ['home']
+        };
+
+        // Function to load a specific page
+        function loadPage(pageId) {
+            const contentContainer = document.getElementById('page-content');
+            
+            // Add to history
+            if (candyData.currentPage !== pageId) {
+                candyData.pageHistory.push(pageId);
+                candyData.currentPage = pageId;
+                updateBrowserHistory(pageId);
+            }
+            
+            // Show loading animation
+            contentContainer.classList.remove('active');
+            contentContainer.innerHTML = `
+                <div class="text-center py-5">
+                    <div class="loading" style="width: 50px; height: 50px; border-width: 5px; margin: 0 auto 20px;"></div>
+                    <p class="candy-title fs-4">Loading sweet content...</p>
+                </div>
+            `;
+            
+            // Load page content after a short delay for smooth transition
+            setTimeout(() => {
+                const pageContent = getPageContent(pageId);
+                contentContainer.innerHTML = pageContent;
+                
+                // Animate in
+                setTimeout(() => {
+                    contentContainer.classList.add('active');
+                    initializePageContent(pageId);
+                }, 50);
+                
+                // Update active navigation
+                updateActiveNav(pageId);
+                
+                // Close sidebar on mobile
+                if (window.innerWidth <= 768) {
+                    toggleSidebar();
+                }
+                
+                // Scroll to top
+                scrollToTop();
+                
+                // Show/hide back to top button
+                updateBackToTopButton();
+            }, 300);
+        }
+
+        // Function to get page content
+        function getPageContent(pageId) {
+            const pageTitles = {
+                'home': 'Home',
+                'about': 'About Us',
+                'products': 'Our Products',
+                'categories': 'Categories',
+                'specials': 'Special Offers',
+                'gifts': 'Gift Baskets',
+                'team': 'Our Team',
+                'locations': 'Store Locations',
+                'blog': 'Sweet Blog',
+                'gallery': 'Candy Gallery',
+                'faq': 'FAQ',
+                'testimonials': 'Testimonials',
+                'events': 'Events',
+                'contact': 'Contact Us',
+                'cart': 'Shopping Cart'
+            };
+
+            let breadcrumb = '';
+            if (pageId !== 'home') {
+                breadcrumb = `
+                    <nav aria-label="breadcrumb" class="mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#" onclick="loadPage('home')">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">${pageTitles[pageId]}</li>
+                        </ol>
+                    </nav>
+                `;
+            }
+
+            let content = '';
+            
+            switch(pageId) {
+                case 'home':
+                    content = getHomePage();
+                    break;
+                case 'about':
+                    content = getAboutPage();
+                    break;
+                case 'products':
+                    content = getProductsPage();
+                    break;
+                case 'categories':
+                    content = getCategoriesPage();
+                    break;
+                case 'specials':
+                    content = getSpecialsPage();
+                    break;
+                case 'gifts':
+                    content = getGiftsPage();
+                    break;
+                case 'team':
+                    content = getTeamPage();
+                    break;
+                case 'locations':
+                    content = getLocationsPage();
+                    break;
+                case 'blog':
+                    content = getBlogPage();
+                    break;
+                case 'gallery':
+                    content = getGalleryPage();
+                    break;
+                case 'faq':
+                    content = getFaqPage();
+                    break;
+                case 'testimonials':
+                    content = getTestimonialsPage();
+                    break;
+                case 'events':
+                    content = getEventsPage();
+                    break;
+                case 'contact':
+                    content = getContactPage();
+                    break;
+                case 'cart':
+                    content = getCartPage();
+                    break;
+                default:
+                    content = getHomePage();
+            }
+            
+            return breadcrumb + content;
+        }
+
+        // Page content generators
+        function getHomePage() {
+            return `
+                <div class="hero-section p-5 mb-5">
+                    <div class="container py-5 position-relative">
+                        <h1 class="display-3 fw-bold mb-4">Welcome to Sweet Tooth Candy Shop! 🍭</h1>
+                        <p class="lead fs-3 mb-4">Where every bite is a celebration of sweetness and joy. Discover our magical world of candies, chocolates, and sweet treats!</p>
+                        <button class="btn btn-primary btn-lg mt-3" onclick="loadPage('products')">
+                            <i class="bi bi-box me-2"></i> Explore Our Candies
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="row g-4 mt-4">
+                    <div class="col-md-4">
+                        <div class="card candy-card h-100">
+                            <div class="card-body text-center p-5">
+                                <i class="bi bi-gem candy-icon candy-color-1"></i>
+                                <h3 class="card-title candy-title">Premium Quality</h3>
+                                <p class="card-text">Handcrafted candies using the finest ingredients and traditional recipes passed down for generations.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card candy-card h-100">
+                            <div class="card-body text-center p-5">
+                                <i class="bi bi-truck candy-icon candy-color-2"></i>
+                                <h3 class="card-title candy-title">Free Shipping</h3>
+                                <p class="card-text">Free delivery on all orders over $50. Fast and reliable shipping to satisfy your sweet cravings quickly!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card candy-card h-100">
+                            <div class="card-body text-center p-5">
+                                <i class="bi bi-heart candy-icon candy-color-3"></i>
+                                <h3 class="card-title candy-title">Made with Love</h3>
+                                <p class="card-text">Every candy is crafted with love and care, ensuring the perfect sweetness in every bite.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <h2 class="candy-title text-center section-title mb-5">Featured Candies</h2>
+                        <div class="row g-4" id="featuredCandies">
+                            <!-- Featured items will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getAboutPage() {
+            return `
+                <h1 class="candy-title display-4 section-title mb-4">Our Sweet Story</h1>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <p class="lead fs-4">Since 1985, Sweet Tooth Candy Shop has been spreading joy and sweetness across the community.</p>
+                        <p class="fs-5">Our founder, Mrs. Sweetheart, started making candies in her kitchen with a simple mission: to create the most delightful, high-quality candies that bring smiles to people's faces. What began as a small home business has grown into a beloved local institution.</p>
+                        <p class="fs-5">Today, we continue to use traditional recipes while innovating with new flavors and creations. Our team of candy artisans works tirelessly to ensure every product meets our high standards of quality and taste.</p>
+                        
+                        <div class="row mt-5">
+                            <div class="col-md-6">
+                                <h4 class="candy-title mb-3"><i class="bi bi-check-circle candy-color-1 me-2"></i> Our Values</h4>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item bg-transparent border-bottom"><i class="bi bi-check2-circle candy-color-1 me-2"></i> Quality ingredients only</li>
+                                    <li class="list-group-item bg-transparent border-bottom"><i class="bi bi-check2-circle candy-color-2 me-2"></i> Traditional candy-making techniques</li>
+                                    <li class="list-group-item bg-transparent border-bottom"><i class="bi bi-check2-circle candy-color-3 me-2"></i> Exceptional customer service</li>
+                                    <li class="list-group-item bg-transparent"><i class="bi bi-check2-circle candy-color-4 me-2"></i> Community involvement</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="candy-title mb-3"><i class="bi bi-award candy-color-2 me-2"></i> Awards</h4>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item bg-transparent border-bottom"><span class="badge-candy me-2">🏆</span> Best Candy Shop 2023</li>
+                                    <li class="list-group-item bg-transparent border-bottom"><span class="badge-candy me-2">🥄</span> Golden Spoon Award 2022</li>
+                                    <li class="list-group-item bg-transparent"><span class="badge-candy me-2">❤️</span> Community Choice Award 2021-2023</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card candy-card sticky-top" style="top: 100px;">
+                            <div class="card-body">
+                                <h5 class="card-title candy-title mb-4"><i class="bi bi-shop candy-color-1 me-2"></i> Visit Our Store</h5>
+                                <p class="card-text fs-5">Come experience the magic in person! Our store is designed like a candy wonderland.</p>
+                                <hr>
+                                <h5 class="card-title candy-title mt-4"><i class="bi bi-clock candy-color-2 me-2"></i> Store Hours</h5>
+                                <p class="card-text"><i class="bi bi-dot me-2"></i>Monday-Friday: 9AM-8PM</p>
+                                <p class="card-text"><i class="bi bi-dot me-2"></i>Saturday: 10AM-9PM</p>
+                                <p class="card-text"><i class="bi bi-dot me-2"></i>Sunday: 11AM-6PM</p>
+                                <button class="btn btn-primary w-100 mt-3" onclick="loadPage('locations')">
+                                    <i class="bi bi-geo-alt me-2"></i> Find Locations
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getProductsPage() {
+            return `
+                <h1 class="candy-title display-4 section-title mb-4">Our Sweet Collection</h1>
+                <div class="row g-4" id="productsGrid">
+                    <!-- Products will be loaded here -->
+                </div>
+            `;
+        }
+
+        function getCategoriesPage() {
+            return `
+                <h1 class="candy-title display-4 section-title mb-4">Candy Categories</h1>
+                <div class="row g-4" id="categoriesGrid">
+                    <!-- Categories will be loaded here -->
+                </div>
+            `;
+        }
+
+        function getSpecialsPage() {
+            return `
+                <h1 class="candy-title display-4 section-title mb-4">Today's Special Offers</h1>
+                <div class="alert alert-success fs-5" role="alert">
+                    <i class="bi bi-gift me-2"></i> <strong>Special Deal:</strong> Get 20% off all chocolate candies this week!
+                </div>
+                <div class="row g-4" id="specialsGrid">
+                    <!-- Special offers will be loaded here -->
+                </div>
+            `;
+        }
+
+        function getGiftsPage() {
+            return `
+                <h1 class="candy-title display-4 section-title mb-4">Gift Baskets</h1>
+                <p class="lead fs-4 text-center mb-5">Perfect presents for any occasion! Customizable gift baskets filled with assorted candies.</p>
+                <div class="row g-4" id="giftsGrid">
+                    <!-- Gift baskets will be loaded here -->
+                </div>
+            `;
+        }
+
+        function getTeamPage() {
+            return `
+                <h1 class="candy-title display-4 section-title mb-4">Meet Our Candy Artisans</h1>
+                <div class="row g-4" id="teamGrid">
+                    <!-- Team members will be loaded here -->
+                </div>
+            `;
+        }
+
+        function getLocationsPage() {
+            return `
+                <h1 class="candy-title display-4 section-title mb-4">Our Store Locations</h1>
+                <div class="row g-4" id="locationsGrid">
+                    <div class="col-md-4">
+                        <div class="card candy-card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title candy-title"><i class="bi bi-geo-alt candy-color-1 me-2"></i> Downtown Sweetville</h5>
+                                <p class="card-text">123 Candy Lane<br>Sweetville, ST 12345</p>
+                                <p><strong>Hours:</strong> 9AM-8PM Daily</p>
+                                <button class="btn btn-primary w-100" onclick="showNotification('Directions sent to your device!')">
+                                    <i class="bi bi-map me-2"></i> Get Directions
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card candy-card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title candy-title"><i class="bi bi-geo-alt candy-color-2 me-2"></i> Sugarland Mall</h5>
+                                <p class="card-text">456 Sweet Avenue<br>Sugarland, ST 67890</p>
+                                <p><strong>Hours:</strong> 10AM-9PM Daily</p>
+                                <button class="btn btn-primary w-100" onclick="showNotification('Directions sent to your device!')">
+                                    <i class="bi bi-map me-2"></i> Get Directions
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card candy-card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title candy-title"><i class="bi bi-geo-alt candy-color-3 me-2"></i> Chocolate District</h5>
+                                <p class="card-text">789 Cocoa Street<br>Chocolatetown, ST 11223</p>
+                                <p><strong>Hours:</strong> 11AM-7PM Daily</p>
+                                <button class="btn btn-primary w-100" onclick="showNotification('Directions sent to your device!')">
+                                    <i class="bi bi-map me-2"></i> Get Directions
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getBlogPage() {
+            return `
+                <h1 class="candy-title display-4 section-title mb-4">Sweet Blog</h1>
+                <div class="row g-4" id="blogGrid">
+                    ${candyData.blog.map(article => `
+                        <div class="col-md-4">
+                            <div class="card candy-card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title candy-title">${article.title}</h5>
+                                    <p class="text-muted"><i class="bi bi-calendar me-2"></i>${new Date(article.date).toLocaleDateString()}</p>
+                                    <p class="card-text">${article.excerpt}</p>
+                                    <button class="btn btn-outline-light" onclick="showNotification('Loading blog post...')">
+                                        Read More
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function getGalleryPage() {
+            return `
+                <h1 class="candy-title display-4 section-title mb-4">Candy Gallery</h1>
+                <p class="lead fs-4 text-center mb-5">Beautiful photos of our candy creations and store events.</p>
+                <div class="row g-4" id="galleryGrid">
+                    ${[1,2,3,4,5,6].map(i => `
+                        <div class="col-md-4">
+                            <div class="card candy-card">
+                                <div class="candy-image-placeholder" style="background: linear-gradient(135deg, var(--candy-${['pink','blue','green','purple','yellow','orange'][i-1]}), var(--candy-purple));">
+                                    <span style="font-size: 4rem;">${['🍭','🍫','🍬','🍎','🍋','💎'][i-1]}</span>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title candy-title">Candy Creation ${i}</h5>
+                                    <p class="card-text">One of our beautiful candy creations made with love and care.</p>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function getFaqPage() {
+            return `
+                <h1 class="candy-title display-4 section-title mb-4">Frequently Asked Questions</h1>
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                Are your candies gluten-free?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! All our candies are gluten-free and made in a dedicated gluten-free facility.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                Do you offer sugar-free options?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, we have a wide selection of sugar-free candies sweetened with natural alternatives.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                What is your shipping policy?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We offer free shipping on orders over $50. Standard shipping takes 3-5 business days.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getTestimonialsPage() {
+            return `
+                <h1 class="candy-title display-4 section-title mb-4">Sweet Words from Our Customers</h1>
+                <div class="row g-4" id="testimonialsGrid">
+                    ${candyData.testimonials.map(testimonial => `
+                        <div class="col-md-4">
+                            <div class="testimonial-card">
+                                <p class="fs-5">"${testimonial.text}"</p>
+                                <div class="d-flex align-items-center mt-4">
+                                    <div class="rounded-circle me-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--candy-pink), var(--candy-purple)); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
+                                        ${testimonial.name.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 candy-title">${testimonial.name}</h6>
+                                        <small class="text-muted">${testimonial.role}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function getEventsPage() {
+            return `
+                <h1 class="candy-title display-4 section-title mb-4">Upcoming Events</h1>
+                <div class="row g-4" id="eventsGrid">
+                    <div class="col-md-4">
+                        <div class="card candy-card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title candy-title">Candy Making Workshop</h5>
+                                <p class="text-muted"><i class="bi bi-calendar me-2"></i>April 15, 2024</p>
+                                <p>Learn to make your own candies with our expert confectioners!</p>
+                                <button class="btn btn-primary" onclick="showNotification('You have registered for the workshop!')">
+                                    Register Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card candy-card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title candy-title">Chocolate Tasting Event</h5>
+                                <p class="text-muted"><i class="bi bi-calendar me-2"></i>May 20, 2024</p>
+                                <p>Sample our finest chocolate creations from around the world.</p>
+                                <button class="btn btn-primary" onclick="showNotification('You have registered for the tasting!')">
+                                    Register Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card candy-card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title candy-title">Kids Candy Party</h5>
+                                <p class="text-muted"><i class="bi bi-calendar me-2"></i>June 10, 2024</p>
+                                <p>A fun-filled party with candy games, crafts, and sweet treats!</p>
+                                <button class="btn btn-primary" onclick="showNotification('Your child is registered for the party!')">
+                                    Register Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getContactPage() {
+            return `
+                <h1 class="candy-title display-4 section-title mb-4">Contact Us</h1>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card candy-card p-4">
+                            <form id="contactForm">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Message</label>
+                                    <textarea class="form-control" id="message" rows="5" required placeholder="Tell us about your sweet ideas..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100" id="submitBtn">
+                                    Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card candy-card h-100">
+                            <div class="card-body p-4">
+                                <h5 class="card-title candy-title mb-4"><i class="bi bi-info-circle candy-color-1 me-2"></i> Contact Information</h5>
+                                <p class="fs-5"><i class="bi bi-geo-alt candy-color-1 me-2"></i> 123 Candy Lane, Sweetville, ST 12345</p>
+                                <p class="fs-5"><i class="bi bi-telephone candy-color-2 me-2"></i> (555) 123-SWEET</p>
+                                <p class="fs-5"><i class="bi bi-envelope candy-color-3 me-2"></i> hello@sweettoothcandy.com</p>
+                                <hr class="my-4">
+                                <h5 class="card-title candy-title mb-3"><i class="bi bi-clock candy-color-4 me-2"></i> Business Hours</h5>
+                                <p class="fs-5"><i class="bi bi-dot me-2"></i>Monday-Friday: 9AM-8PM</p>
+                                <p class="fs-5"><i class="bi bi-dot me-2"></i>Saturday: 10AM-9PM</p>
+                                <p class="fs-5"><i class="bi bi-dot me-2"></i>Sunday: 11AM-6PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getCartPage() {
+            return `
+                <h1 class="candy-title display-4 section-title mb-4">Your Sweet Cart</h1>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card candy-card p-4">
+                            <div id="cartItems">
+                                <!-- Cart items will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card candy-card p-4">
+                            <h5 class="candy-title mb-4">Order Summary</h5>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Subtotal:</span>
+                                <span id="subtotal">$0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Shipping:</span>
+                                <span id="shipping">$0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <span>Tax:</span>
+                                <span id="tax">$0.00</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between mb-4">
+                                <strong>Total:</strong>
+                                <strong id="total">$0.00</strong>
+                            </div>
+                            <button class="btn btn-primary w-100" onclick="checkout()">
+                                <i class="bi bi-lock me-2"></i> Proceed to Checkout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize page content after loading
+        function initializePageContent(pageId) {
+            switch(pageId) {
+                case 'home':
+                    loadFeaturedCandies();
+                    break;
+                case 'products':
+                    loadProducts();
+                    break;
+                case 'categories':
+                    loadCategories();
+                    break;
+                case 'specials':
+                    loadSpecials();
+                    break;
+                case 'gifts':
+                    loadGifts();
+                    break;
+                case 'team':
+                    loadTeam();
+                    break;
+                case 'cart':
+                    loadCart();
+                    break;
+            }
+            
+            // Initialize any forms on the page
+            initializeForms();
+        }
+
+        // Load featured candies
+        function loadFeaturedCandies() {
+            const container = document.getElementById('featuredCandies');
+            if (!container) return;
+            
+            container.innerHTML = candyData.featured.map(candy => `
+                <div class="col-md-3 col-sm-6">
+                    <div class="card candy-card h-100">
+                        <div class="candy-image-placeholder" style="background: linear-gradient(135deg, var(--candy-${candy.color}), var(--candy-purple));">
+                            <span style="font-size: 4rem;">${candy.emoji}</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title candy-title">${candy.name}</h5>
+                            <p class="card-text">${candy.desc}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price-tag">$${candy.price.toFixed(2)}</span>
+                                <button class="btn btn-sm btn-primary" onclick="addToCart(${candy.id}, 'featured')">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load all products
+        function loadProducts() {
+            const container = document.getElementById('productsGrid');
+            if (!container) return;
+            
+            container.innerHTML = candyData.products.map(product => `
+                <div class="col-md-3 col-sm-6">
+                    <div class="card candy-card h-100">
+                        <div class="candy-image-placeholder" style="background: linear-gradient(135deg, var(--candy-${product.color}), var(--candy-purple));">
+                            <span style="font-size: 4rem;">${product.emoji}</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title candy-title">${product.name}</h5>
+                            <p class="card-text">${product.desc}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price-tag">$${product.price.toFixed(2)}</span>
+                                <button class="btn btn-sm btn-primary" onclick="addToCart(${product.id}, 'products')">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load categories
+        function loadCategories() {
+            const container = document.getElementById('categoriesGrid');
+            if (!container) return;
+            
+            container.innerHTML = candyData.categories.map((category, index) => `
+                <div class="col-md-4 col-sm-6">
+                    <div class="card candy-card h-100">
+                        <div class="card-body text-center p-5">
+                            <div class="candy-icon" style="font-size: 4rem;">${category.emoji}</div>
+                            <h3 class="card-title candy-title">${category.name}</h3>
+                            <p class="card-text fs-5">${category.count} different varieties</p>
+                            <button class="btn btn-outline-light" onclick="loadPage('products')">
+                                Browse ${category.name}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load specials
+        function loadSpecials() {
+            const container = document.getElementById('specialsGrid');
+            if (!container) return;
+            
+            const specialProducts = candyData.products.slice(0, 3).map(p => ({...p, discount: 0.2}));
+            
+            container.innerHTML = specialProducts.map(product => `
+                <div class="col-md-4">
+                    <div class="card candy-card h-100">
+                        <div class="candy-image-placeholder" style="background: linear-gradient(135deg, var(--candy-${product.color}), var(--candy-purple));">
+                            <span style="font-size: 4rem;">${product.emoji}</span>
+                            <div class="position-absolute top-0 end-0 m-3">
+                                <span class="badge bg-danger fs-6">20% OFF</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title candy-title">${product.name}</h5>
+                            <p class="card-text">${product.desc}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="text-decoration-line-through text-muted me-2">$${product.price.toFixed(2)}</span>
+                                    <span class="price-tag">$${(product.price * 0.8).toFixed(2)}</span>
+                                </div>
+                                <button class="btn btn-sm btn-primary" onclick="addToCart(${product.id}, 'products', true)">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load gifts
+        function loadGifts() {
+            const container = document.getElementById('giftsGrid');
+            if (!container) return;
+            
+            const gifts = [
+                { name: "Sweet Starter Basket", price: 24.99, emoji: "🧺", desc: "Perfect introduction to our candies" },
+                { name: "Chocolate Lover's Bundle", price: 39.99, emoji: "🍫", desc: "All our finest chocolate creations" },
+                { name: "Ultimate Candy Collection", price: 59.99, emoji: "🎁", desc: "Our complete candy selection" }
+            ];
+            
+            container.innerHTML = gifts.map((gift, index) => `
+                <div class="col-md-4">
+                    <div class="card candy-card h-100">
+                        <div class="card-body text-center p-5">
+                            <div class="candy-icon" style="font-size: 4rem;">${gift.emoji}</div>
+                            <h3 class="card-title candy-title">${gift.name}</h3>
+                            <p class="card-text">${gift.desc}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-4">
+                                <span class="price-tag">$${gift.price.toFixed(2)}</span>
+                                <button class="btn btn-primary" onclick="addGiftToCart(${index})">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load team
+        function loadTeam() {
+            const container = document.getElementById('teamGrid');
+            if (!container) return;
+            
+            container.innerHTML = candyData.team.map(member => `
+                <div class="col-md-4">
+                    <div class="team-card">
+                        <div class="card-body text-center p-4">
+                            <div class="team-avatar">
+                                <span style="font-size: 3.5rem;">${member.emoji}</span>
+                            </div>
+                            <h5 class="card-title candy-title mt-4">${member.name}</h5>
+                            <p class="text-muted fs-5">${member.role}</p>
+                            <p>${member.desc}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Add to cart function
+        function addToCart(productId, source, isDiscounted = false) {
+            const products = source === 'featured' ? candyData.featured : candyData.products;
+            const product = products.find(p => p.id === productId);
+            
+            if (product) {
+                const existingItem = candyData.cart.find(item => item.id === productId);
+                
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    candyData.cart.push({
+                        ...product,
+                        quantity: 1,
+                        discounted: isDiscounted
+                    });
+                }
+                
+                updateCartCount();
+                showNotification(`Added ${product.name} to your cart!`);
+                
+                // If we're on the cart page, refresh it
+                if (candyData.currentPage === 'cart') {
+                    loadCart();
+                }
+            }
+        }
+
+        // Add gift to cart
+        function addGiftToCart(giftIndex) {
+            const gifts = [
+                { id: 100, name: "Sweet Starter Basket", price: 24.99, emoji: "🧺" },
+                { id: 101, name: "Chocolate Lover's Bundle", price: 39.99, emoji: "🍫" },
+                { id: 102, name: "Ultimate Candy Collection", price: 59.99, emoji: "🎁" }
+            ];
+            
+            const gift = gifts[giftIndex];
+            
+            if (gift) {
+                const existingItem = candyData.cart.find(item => item.id === gift.id);
+                
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    candyData.cart.push({
+                        ...gift,
+                        quantity: 1,
+                        desc: "Special gift basket"
+                    });
+                }
+                
+                updateCartCount();
+                showNotification(`Added ${gift.name} to your cart!`);
+                
+                if (candyData.currentPage === 'cart') {
+                    loadCart();
+                }
+            }
+        }
+
+        // Update cart count in navbar
+        function updateCartCount() {
+            const totalItems = candyData.cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountEl = document.getElementById('cartCount');
+            if (cartCountEl) {
+                cartCountEl.textContent = totalItems;
+            }
+        }
+
+        // Load cart contents
+        function loadCart() {
+            const container = document.getElementById('cartItems');
+            const subtotalEl = document.getElementById('subtotal');
+            const shippingEl = document.getElementById('shipping');
+            const taxEl = document.getElementById('tax');
+            const totalEl = document.getElementById('total');
+            
+            if (!container || !subtotalEl || !shippingEl || !taxEl || !totalEl) return;
+            
+            if (candyData.cart.length === 0) {
+                container.innerHTML = '<p class="text-center fs-4 py-5">Your shopping cart is currently empty. Add some sweet treats!</p>';
+                subtotalEl.textContent = '$0.00';
+                shippingEl.textContent = '$0.00';
+                taxEl.textContent = '$0.00';
+                totalEl.textContent = '$0.00';
+                return;
+            }
+            
+            let subtotal = 0;
+            
+            container.innerHTML = candyData.cart.map(item => {
+                const price = item.discounted ? item.price * 0.8 : item.price;
+                const itemTotal = price * item.quantity;
+                subtotal += itemTotal;
+                
+                return `
+                    <div class="row align-items-center mb-3 pb-3 border-bottom">
+                        <div class="col-2 text-center">
+                            <div class="candy-image-placeholder" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                ${item.emoji}
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <h6 class="mb-0 candy-title">${item.name}</h6>
+                            <small class="text-muted">$${price.toFixed(2)} each</small>
+                            ${item.discounted ? '<br><span class="badge bg-danger">20% OFF</span>' : ''}
+                        </div>
+                        <div class="col-3">
+                            <div class="input-group input-group-sm">
+                                <button class="btn btn-outline-secondary" onclick="updateQuantity(${item.id}, -1)">-</button>
+                                <input type="text" class="form-control text-center" value="${item.quantity}" readonly>
+                                <button class="btn btn-outline-secondary" onclick="updateQuantity(${item.id}, 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="col-2 text-end">
+                            <strong>$${itemTotal.toFixed(2)}</strong>
+                            <br>
+                            <button class="btn btn-link text-danger btn-sm p-0" onclick="removeFromCart(${item.id})">Remove</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            const shipping = subtotal >= 50 ? 0 : 5.99;
+            const tax = subtotal * 0.08;
+            const total = subtotal + shipping + tax;
+            
+            subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+            shippingEl.textContent = shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`;
+            taxEl.textContent = `$${tax.toFixed(2)}`;
+            totalEl.textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Update item quantity in cart
+        function updateQuantity(productId, change) {
+            const item = candyData.cart.find(item => item.id === productId);
+            
+            if (item) {
+                item.quantity += change;
+                
+                if (item.quantity <= 0) {
+                    candyData.cart = candyData.cart.filter(item => item.id !== productId);
+                }
+                
+                updateCartCount();
+                loadCart();
+            }
+        }
+
+        // Remove item from cart
+        function removeFromCart(productId) {
+            candyData.cart = candyData.cart.filter(item => item.id !== productId);
+            updateCartCount();
+            loadCart();
+            showNotification('Item removed from cart');
+        }
+
+        // Checkout function
+        function checkout() {
+            if (candyData.cart.length === 0) {
+                showNotification('Your cart is empty! Add some candies first.');
+                return;
+            }
+            
+            showNotification('Thank you for your order! Your sweet treats are on their way!');
+            candyData.cart = [];
+            updateCartCount();
+            loadCart();
+        }
+
+        // Show notification
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'position-fixed top-0 end-0 m-4 p-3 rounded shadow-lg';
+            notification.style.backgroundColor = 'var(--candy-pink)';
+            notification.style.color = 'white';
+            notification.style.zIndex = '9999';
+            notification.style.minWidth = '300px';
+            notification.style.borderRadius = '15px';
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-check-circle fs-4 me-3"></i>
+                    <div class="flex-grow-1">
+                        <strong>${message}</strong>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" onclick="this.parentElement.parentElement.remove()"></button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 3000);
+        }
+
+        // Initialize forms
+        function initializeForms() {
+            // Contact form
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const submitBtn = document.getElementById('submitBtn');
+                    const originalText = submitBtn.innerHTML;
+                    
+                    submitBtn.innerHTML = '<span class="loading"></span> Sending...';
+                    submitBtn.disabled = true;
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        showNotification('Thank you for your sweet message! We\'ll get back to you soon.');
+                        this.reset();
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }, 1500);
+                });
+            }
+        }
+
+        // Newsletter subscription
+        function subscribeNewsletter() {
+            const email = document.getElementById('newsletterEmail');
+            if (email && email.value.includes('@')) {
+                showNotification('Thank you for subscribing to our sweet newsletter!');
+                email.value = '';
+            } else {
+                showNotification('Please enter a valid email address.');
+            }
+        }
+
+        // Update active navigation
+        function updateActiveNav(pageId) {
+            // Update sidebar nav
+            document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('onclick')?.includes(pageId)) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Update navbar nav
+            document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('onclick')?.includes(pageId)) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Update dropdown nav items
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('onclick')?.includes(pageId)) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // Update browser history
+        function updateBrowserHistory(pageId) {
+            const pageTitles = {
+                'home': 'Home - Sweet Tooth Candy Shop',
+                'about': 'About Us - Sweet Tooth Candy Shop',
+                'products': 'Products - Sweet Tooth Candy Shop',
+                'categories': 'Categories - Sweet Tooth Candy Shop',
+                'specials': 'Special Offers - Sweet Tooth Candy Shop',
+                'gifts': 'Gift Baskets - Sweet Tooth Candy Shop',
+                'team': 'Our Team - Sweet Tooth Candy Shop',
+                'locations': 'Store Locations - Sweet Tooth Candy Shop',
+                'blog': 'Blog - Sweet Tooth Candy Shop',
+                'gallery': 'Gallery - Sweet Tooth Candy Shop',
+                'faq': 'FAQ - Sweet Tooth Candy Shop',
+                'testimonials': 'Testimonials - Sweet Tooth Candy Shop',
+                'events': 'Events - Sweet Tooth Candy Shop',
+                'contact': 'Contact Us - Sweet Tooth Candy Shop',
+                'cart': 'Shopping Cart - Sweet Tooth Candy Shop'
+            };
+            
+            // Update browser title
+            document.title = pageTitles[pageId] || 'Sweet Tooth Candy Shop';
+            
+            // Update URL hash
+            window.history.pushState({page: pageId}, '', `#${pageId}`);
+        }
+
+        // Handle browser back/forward
+        window.addEventListener('popstate', function(event) {
+            if (event.state && event.state.page) {
+                loadPage(event.state.page);
+            }
+        });
+
+        // Function to toggle sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            
+            if (window.innerWidth <= 768 && 
+                sidebar.classList.contains('active') && 
+                !sidebar.contains(event.target) && 
+                !navbarToggler.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Scroll to top function
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Update back to top button visibility
+        function updateBackToTopButton() {
+            const backToTopBtn = document.querySelector('.back-to-top');
+            if (!backToTopBtn) return;
+            
+            if (window.scrollY > 300) {
+                backToTopBtn.style.display = 'flex';
+            } else {
+                backToTopBtn.style.display = 'none';
+            }
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load initial page from URL hash or default to home
+            const initialPage = window.location.hash.substring(1) || 'home';
+            loadPage(initialPage);
+            
+            // Update cart count
+            updateCartCount();
+            
+            // Set up scroll event for back to top button
+            window.addEventListener('scroll', updateBackToTopButton);
+            
+            // Initialize back to top button
+            updateBackToTopButton();
+            
+            // Handle initial browser state
+            window.history.replaceState({page: initialPage}, '', `#${initialPage}`);
+        });
+    </script>
+</body>
+</html>
